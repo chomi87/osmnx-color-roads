@@ -214,4 +214,4 @@ def generate_image(place, **kwargs):
     with open(palette_filename, 'w+') as out:
         json.dump(palette_key, out)
 
-    return top, popular_words, palette_key
+    return fig, top, popular_words, palette_key
