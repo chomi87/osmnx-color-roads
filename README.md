@@ -36,6 +36,9 @@ generate_image('Oahu, Mililani, Honolulu County, Hawaii, United States of Americ
 ```
 
 ## Inspiration
+Extending the work of timfernando
+-> https://github.com/timfernando/osmnx-color-roads
+
 Inspiration and original code from Giuseppe Sollazzo @puntofisso
 -> https://twitter.com/puntofisso/status/1213135545121099777?s=20
 
