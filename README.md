@@ -1,35 +1,27 @@
 # Streamlit app for osmnx-color-roads
-Deploy a streamlit app to make maps 
+Docker container to deploy a streamlit app to make city maps
 
 # osmnx-color-roads
 Quickly generate maps of road networks coloured by words in road names
 
 ## What it does
 
-* Gets the OSM graph for a given place
-* Finds the most common words used in the graph
-* Generates a colour scheme based on the common words
-* Tries to ensure that the most common words have visually distinct colours
-* Allows for stop words (TODO: Improve this system)
-* Allows for a single line query to generate a map and allows for osmnx optional
-  parameters, e.g. dpi, etc.
+* Runs a streamlit based webapp to interact with the osmnx-color-roads codebase
+* The code generates a map with street colored based on the most common words in the OSM. graph of the city
 
 ## Installation
 
-`osmnx-color-roads` requires `osmnx` which has a long list of dependencies. The fastest way to get started is to use [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/index.html) to manage your Python environment and dependencies for osmnx.
-
-1. Install conda
-2. Setup osmnx with conda
-   ```
-   conda config --prepend channels conda-forge
-   conda create -n ox --strict-channel-priority osmnx
-   ```
-3. 
-   `conda activate ox`
-4. Download a copy of `osmnx_color_roads.py` from this repo
-4. Run your python program that imports `osmnx_color_roads`
-
-*Warning: conda will clash with Pyenv - [this StackOverflow can help](https://stackoverflow.com/questions/57640272/how-can-i-install-anaconda-aside-an-existing-pyenv-installation-on-osx)* 
+* clone the repository
+* install docker on your machine
+* `cd` in the directory
+* build the docker image
+```
+docker build -t <name> -f Dockerfile .
+```
+* run the docker container
+```
+docker run -p 8501:8501 <name>
+```
 
 ## Example usage:
 ```
@@ -47,5 +39,5 @@ Inspiration and original code from Giuseppe Sollazzo @puntofisso
 
 Building on work by Cédric Scherer @CedScherer and @erdavis
 
-#mapgeek #gis #osmnx #opensource #visualization #python #mapvisualization
+#docker #mapgeek #gis #osmnx #opensource #visualization #python #mapvisualization
 
