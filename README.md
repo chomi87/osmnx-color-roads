@@ -13,7 +13,7 @@ Quickly generate maps of road networks coloured by words in road names
 
 * clone the repository
 * install docker on your machine
-* `cd` in the directory
+* `cd` in the directory to the level of the Dockerfile
 * build the docker image
 ```
 docker build -t <name> -f Dockerfile .
@@ -24,11 +24,10 @@ docker run -p 8501:8501 <name>
 ```
 
 ## Example usage:
-```
-from  osmnx_color_roads import generate_image
-
-generate_image('Oahu, Mililani, Honolulu County, Hawaii, United States of America', query_type='string', key_size=9, line_width=0.5)
-```
+* go to `http://localhost:8501/`
+* type the name of a city (adding the country helps)
+* ...
+* profit
 
 ## Inspiration
 Extending the work of timfernando
