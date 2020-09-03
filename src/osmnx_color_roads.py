@@ -207,11 +207,8 @@ def generate_image(place, **kwargs):
                             node_color='w', node_edgecolor='gray',
                             node_zorder=2, edge_color=edge_colors,
                             edge_linewidth=line_width, edge_alpha=0.98,
-                            figsize=(20, 20), dpi=dpi, save=True,
+                            figsize=(20, 20), dpi=dpi, save=False,
                             filepath=image_filename)
 
-    # Save the palette key
-    with open(palette_filename, 'w+') as out:
-        json.dump(palette_key, out)
 
     return fig, top, popular_words, palette_key
