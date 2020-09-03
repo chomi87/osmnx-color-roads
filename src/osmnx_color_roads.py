@@ -30,6 +30,7 @@ import osmnx as ox
 import seaborn as sns
 import string
 from stop_words import get_stop_words
+import pandas as pd
 
 ox.config(log_console=True, use_cache=True)
 
@@ -37,7 +38,7 @@ ox.config(log_console=True, use_cache=True)
 TODO: Come up with a more elegant way of handling stop words
 """
 STOP_WORDS = [word for word in get_stop_words('english' )]
-STOP_WORDS = STOP_WORDS + [word for word in get_stop_words('italian')]
+STOP_WORDS = STOP_WORDS + [
                 'the', 'le',
                 # Hong Kong
                 'hong', 'west', 'central', 'wan', 'tai', 'shing', 'tung',
@@ -104,23 +105,14 @@ def color_for_road(road_name, palette_key):
 def find_common_words(edges):
     """
     Find the most common words in the graph
+
     Return a dictionary with word: number of occurences
     """
     # Get all the words in the given edges
     occurrences = defaultdict(int)
-    for _, row in edges.iterrows():
-        # We seem to get 'NaN' for empty fields in this data
-        # ignoring floats as a result
-        if type(row['name']) is float:
-            continue
-        words = str(row['name']).split(' ')
-        #words = [word.lower().translate(str.maketrans('', '', string.punctuation)) for word in words]
-        valid_words = (word for word in words
-                       if word not in STOP_WORDS and
-                       len(word) > 1 and
-                       not word.isdigit())
-        for word in valid_words:
-            occurrences[word] += 1
+    occurrences = edges["name"].apply(lambda x: pd.value_counts(x.split(" "))).sum(axis=0).to_dict()
+    [occurrences.pop(word, None) for word in STOP_WORDS]
+    occurrences.pop("", None)
     return occurrences
 
 
