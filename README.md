@@ -9,7 +9,10 @@ Quickly generate maps of road networks coloured by words in road names
 * Runs a streamlit based webapp to interact with the osmnx-color-roads codebase
 * The code generates a map with street colored based on the most common words in the OSM. graph of the city
 
-## Installation
+## Installation and usage without docker
+TODO
+
+## Installation with docker
 
 * clone the repository
 * install docker on your machine
@@ -23,7 +26,7 @@ docker build -t <name> -f Dockerfile .
 docker run -p 8501:8501 <name>
 ```
 
-## Example usage:
+## Example usage with docker:
 * go to `http://localhost:8501/`
 * type the name of a city (adding the country helps)
 * ...
