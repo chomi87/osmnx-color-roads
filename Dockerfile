@@ -22,6 +22,7 @@ WORKDIR /app/
 RUN conda install pip
 RUN pip install streamlit
 RUN pip install seaborn
+RUN pip install stop-words
 
 # Make sure the environment is activated:
 RUN echo "Make sure streamlit is installed:"

@@ -29,13 +29,15 @@ from collections import Counter, defaultdict
 import osmnx as ox
 import seaborn as sns
 import string
+from stop_words import get_stop_words
 
 ox.config(log_console=True, use_cache=True)
 
 """
 TODO: Come up with a more elegant way of handling stop words
 """
-STOP_WORDS = [
+STOP_WORDS = [word for word in get_stop_words('english' )]
+STOP_WORDS = STOP_WORDS + [word for word in get_stop_words('italian')]
                 'the', 'le',
                 # Hong Kong
                 'hong', 'west', 'central', 'wan', 'tai', 'shing', 'tung',
