@@ -109,8 +109,8 @@ def find_common_words(edges):
     Return a dictionary with word: number of occurences
     """
     # Get all the words in the given edges
-    occurrences = defaultdict(int)
-    occurrences = edges["name"].apply(lambda x: pd.value_counts(x.split(" "))).sum(axis=0).to_dict()
+
+    occurrences = edges["name"].apply(lambda x: pd.value_counts(x.split(" "))).sum(axis=0).sort_values(ascending=False).to_dict()
     [occurrences.pop(word, None) for word in STOP_WORDS]
     occurrences.pop("", None)
     return occurrences
@@ -198,8 +198,7 @@ def generate_image(place, **kwargs):
     # Find the most popular words in the names,
     # these should be things like 'road', 'street' etc
     popular_words = find_common_words(edge_attributes)
-    top = dict(Counter(popular_words).most_common(key_size))
-    print(f'Top words: {top}')
+    top = dict(list(popular_words.items())[0: key_size])
 
     palette_key = palette_generator(top)
     edge_colors = [color_for_road(row['name'], palette_key)

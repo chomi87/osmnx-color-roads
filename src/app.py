@@ -9,7 +9,7 @@ key_size = st.sidebar.number_input(
     1, 20, 10
 )
 
-word_list = key_size = st.sidebar.text_input("comma separated list of words", value="", max_chars=None, key=None, type='default')
+word_list = st.sidebar.text_input("comma separated list of words", value="", max_chars=None, key=None, type='default')
 
 city = ""
 city = st.text_input("city", value='', max_chars=None, key=None, type='default')
