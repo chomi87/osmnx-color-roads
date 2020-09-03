@@ -28,6 +28,7 @@ from collections import Counter, defaultdict
 
 import osmnx as ox
 import seaborn as sns
+import string
 
 ox.config(log_console=True, use_cache=True)
 
@@ -90,7 +91,7 @@ def color_for_road(road_name, palette_key):
     """
     Take a road string, the language and return a color
     """
-    road_name = str(road_name).lower()
+    #road_name = str(road_name).lower().translate(str.maketrans('', '', string.punctuation))
     # Check if any of the palette keys are present in the road name
     for key in palette_key:
         if key in road_name:
@@ -111,8 +112,9 @@ def find_common_words(edges):
         if type(row['name']) is float:
             continue
         words = str(row['name']).split(' ')
-        valid_words = (word.lower() for word in words
-                       if word.lower() not in STOP_WORDS and
+        #words = [word.lower().translate(str.maketrans('', '', string.punctuation)) for word in words]
+        valid_words = (word for word in words
+                       if word not in STOP_WORDS and
                        len(word) > 1 and
                        not word.isdigit())
         for word in valid_words:
@@ -154,6 +156,12 @@ def get_data(place, which_result, network_type):
             which_result += 1
     return graph
 
+def normalise_str(st):
+    """
+    clean road names by lowering, stripping punctuation, leading and trailing spaces
+    """
+    normalised = str(st).lower().translate(str.maketrans('', '', string.punctuation)).strip()
+    return normalised
 
 def generate_image(place, **kwargs):
     """
@@ -191,6 +199,7 @@ def generate_image(place, **kwargs):
 
     # Get the metadata from the graph edges
     edge_attributes = ox.graph_to_gdfs(graph, nodes=False)
+    edge_attributes.loc[:, "name"] = edge_attributes.loc[:, "name"].fillna("").map(normalise_str)
 
     # Find the most popular words in the names,
     # these should be things like 'road', 'street' etc
