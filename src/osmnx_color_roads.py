@@ -102,7 +102,7 @@ def color_for_road(road_name, palette_key):
     return "#c6c6c6"  # Default color
 
 
-def find_common_words(edges):
+def find_common_words(edges, word_list = None):
     """
     Find the most common words in the graph
 
@@ -112,8 +112,12 @@ def find_common_words(edges):
     from collections import Counter
     counts = Counter()
 
-    for sentence in edges.loc[:,"name"].to_list():
-        counts.update(word for word in sentence.split())
+    if word_list:
+        for sentence in edges.loc[:,"name"].to_list():
+            counts.update(word for word in sentence.split() if word in word_list)
+    else:
+        for sentence in edges.loc[:,"name"].to_list():
+            counts.update(word for word in sentence.split())
 
     occurrences = dict(counts.most_common(100))
     occurrences.pop("", None)

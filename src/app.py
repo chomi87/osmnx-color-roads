@@ -10,8 +10,11 @@ key_size = 10
 place=""
 which_result = 1
 network_type = "all"
+word_input = ""
+word_list = None
 
 st.title('Color city generator')
+st.subheader('Generate a map of a city with roads colored by their type (road, street, ...)')
 
 # Add a widget to the sidebar to select number of colors:
 key_size = st.sidebar.number_input(
@@ -19,7 +22,12 @@ key_size = st.sidebar.number_input(
     1, 20, 10
 )
 
-word_list = st.sidebar.text_input("comma separated list of words", value="", max_chars=None, key=None, type='default')
+word_input = st.sidebar.text_input("Comma separated list of words to use - leave blank to auto-detect",
+                                   value="", max_chars=None, key=None, type='default')
+
+if len(word_input)>2:
+    word_list = word_input.split(",")
+    word_list = [normalise_str(word) for word in word_list]
 
 place = st.text_input("city", value='', max_chars=None, key=None, type='default')
 st.write('You selected: ', place)
@@ -35,11 +43,13 @@ if len(place)>2:
     with st.spinner('Find the most popular words in the names...'):
         # Find the most popular words in the names,
         # these should be things like 'road', 'street' etc
-        popular_words = find_common_words(edge_attributes)
+        popular_words = find_common_words(edge_attributes, word_list)
         top = dict(list(popular_words.items())[0: key_size])
 
     with st.spinner('Generating color palette...'):
         palette_key = palette_generator(top)
+
+    with st.spinner('Applying palette...'):
         edge_colors = [color_for_road(row['name'], palette_key)
                        for _, row in edge_attributes.iterrows()]
 
@@ -53,7 +63,7 @@ if len(place)>2:
                                 )
 
     sorted_dict = sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
-    df = pd.DataFrame(sorted_dict, columns=["Word", "Count"]).head(key_size)
+    df = pd.DataFrame(sorted_dict, columns=["Word", "Count"]).head(2*key_size)
 
     st.pyplot()
     st.sidebar.write(df)
