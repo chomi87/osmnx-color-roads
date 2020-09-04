@@ -109,9 +109,16 @@ def find_common_words(edges):
     Return a dictionary with word: number of occurences
     """
     # Get all the words in the given edges
+    from collections import Counter
+    counts = Counter()
 
-    occurrences = edges["name"].apply(lambda x: pd.value_counts(x.split(" "))).sum(axis=0).sort_values(ascending=False).to_dict()
+    for sentence in edges.loc[:,"name"].to_list():
+        counts.update(word for word in sentence.split())
+
+    occurrences = dict(counts.most_common(100))
     occurrences.pop("", None)
+    occurrences.pop("nan", None)
+
     return occurrences
 
 def get_data_point(lat_lon, radius, network_type):
