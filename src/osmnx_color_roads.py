@@ -31,6 +31,8 @@ import seaborn as sns
 import string
 from stop_words import get_stop_words
 import pandas as pd
+from matplotlib.lines import Line2D
+
 
 ox.config(log_console=True, use_cache=True)
 
@@ -158,6 +160,11 @@ def get_data(place, which_result, network_type):
             #  seem to allow a smarter way of searching using this API
             which_result += 1
     return graph
+
+def create_legend_lines(palette_key):
+    custom_lines = [Line2D([0], [0], color = entry[1], lw=4) for entry in palette_key.items()]
+    return custom_lines
+
 
 def normalise_str(st):
     """

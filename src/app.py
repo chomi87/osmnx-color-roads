@@ -1,6 +1,6 @@
 import streamlit as st
 import osmnx as ox
-from osmnx_color_roads import generate_image, palette_generator, color_for_road, find_common_words, get_data_point, get_data, normalise_str
+from osmnx_color_roads import generate_image, palette_generator, color_for_road, find_common_words, get_data_point, get_data, normalise_str, create_legend_lines
 import pandas as pd
 
 #config
@@ -61,6 +61,9 @@ if len(place)>2:
                                 edge_linewidth=line_width, edge_alpha=0.98,
                                 figsize=(20, 20), dpi=dpi, save=False,
                                 )
+        lines = create_legend_lines(palette_key)
+        ax.set_title(place, {'fontsize': 22})
+        ax.legend(lines,palette_key.keys(), fontsize="x-large", frameon=False, mode="expand")
 
     sorted_dict = sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
     df = pd.DataFrame(sorted_dict, columns=["Word", "Count"]).head(2*key_size)
