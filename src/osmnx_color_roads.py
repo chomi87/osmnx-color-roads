@@ -111,10 +111,8 @@ def find_common_words(edges):
     # Get all the words in the given edges
 
     occurrences = edges["name"].apply(lambda x: pd.value_counts(x.split(" "))).sum(axis=0).sort_values(ascending=False).to_dict()
-    [occurrences.pop(word, None) for word in STOP_WORDS]
     occurrences.pop("", None)
     return occurrences
-
 
 def get_data_point(lat_lon, radius, network_type):
     """
@@ -155,6 +153,7 @@ def normalise_str(st):
     clean road names by lowering, stripping punctuation, leading and trailing spaces
     """
     normalised = str(st).lower().translate(str.maketrans('', '', string.punctuation)).strip()
+    normalised = ' '.join([word for word in normalised.split() if word not in (STOP_WORDS)])
     return normalised
 
 def generate_image(place, **kwargs):
