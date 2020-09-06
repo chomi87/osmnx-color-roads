@@ -24,6 +24,7 @@ key_size = st.sidebar.number_input(
 word_input = st.sidebar.text_input("Comma separated list of keywords - leave blank to auto-detect",
                                    value="", max_chars=None, key=None, type='default')
 
+
 #if there was an input, parse it
 if len(word_input)>2:
     word_list = word_input.split(",")
