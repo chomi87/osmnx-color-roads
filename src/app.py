@@ -6,13 +6,12 @@ import pandas as pd
 #config
 line_width = 1
 dpi = 300
-key_size = 10
 place=""
 which_result = 1
 network_type = "all"
-word_input = ""
 word_list = None
 
+#display title and intro text
 st.title('Color city generator')
 st.subheader('Generate a map of a city with roads colored by their type (road, street, ...)')
 
@@ -21,17 +20,20 @@ key_size = st.sidebar.number_input(
     'How many colors?',
     1, 20, 10
 )
-
-word_input = st.sidebar.text_input("Comma separated list of words to use - leave blank to auto-detect",
+# Add a widget to the sidebar to enter a list of keywords:
+word_input = st.sidebar.text_input("Comma separated list of keywords - leave blank to auto-detect",
                                    value="", max_chars=None, key=None, type='default')
 
+#if there was an input, parse it
 if len(word_input)>2:
     word_list = word_input.split(",")
     word_list = [normalise_str(word) for word in word_list]
 
-place = st.text_input("city", value='', max_chars=None, key=None, type='default')
+#widget to enter the city
+place = st.text_input("City, Country", value='', max_chars=None, key=None, type='default')
 st.write('You selected: ', place)
 
+#if a city was entered, enter the main cycle
 if len(place)>2:
     with st.spinner('Fetching graph...'):
         graph = get_data(place, which_result = which_result, network_type = network_type)
@@ -65,10 +67,9 @@ if len(place)>2:
         ax.set_title(place, {'fontsize': 22})
         ax.legend(lines,palette_key.keys(), fontsize="x-large", frameon=False, mode="expand")
 
+        st.pyplot()
+
+    #output the top words and counts
     sorted_dict = sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
-    df = pd.DataFrame(sorted_dict, columns=["Word", "Count"]).head(2*key_size)
-
-    st.pyplot()
+    df = pd.DataFrame(sorted_dict)
     st.sidebar.write(df)
-
-
