@@ -2,10 +2,24 @@ import streamlit as st
 import osmnx as ox
 from osmnx_color_roads import generate_image, palette_generator, color_for_road, find_common_words, get_data_point, get_data, normalise_str, create_legend_lines
 import pandas as pd
+import base64
+import matplotlib.pyplot as plt
+import io
+
+def get_table_download_link(file_path):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    with open(file_path, "rb") as imageFile:
+        b64 = base64.b64encode(imageFile.read())
+    #b64 = image_str.decode()  # some strings <-> bytes conversions necessary here
+    href = f'<a href="data:application/octet-stream;base64,{b64.decode()}" download="{file_path}">Download image file</a>'
+    return href
 
 #config
 line_width = 1
-dpi = 300
+dpi = 400
 place=""
 which_result = 1
 network_type = "all"
@@ -47,8 +61,8 @@ if len(place)>2:
         # Find the most popular words in the names,
         # these should be things like 'road', 'street' etc
         popular_words = find_common_words(edge_attributes, word_list)
-        sorted_popular= sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
-        top = dict(list(popular_words.items())[0: key_size])
+        sorted_popular= {k: v for k, v in sorted(popular_words.items(), key=lambda item: item[1], reverse=True)}
+        top = dict(list(sorted_popular.items())[0: key_size])
 
     with st.spinner('Generating color palette...'):
         palette_key = palette_generator(top)
@@ -62,14 +76,18 @@ if len(place)>2:
                                 node_color='w', node_edgecolor='gray',
                                 node_zorder=2, edge_color=edge_colors,
                                 edge_linewidth=line_width, edge_alpha=0.98,
-                                figsize=(20, 20), dpi=dpi, save=False,
+                                figsize=(15, 15), dpi=dpi, save=False,
                                 )
         lines = create_legend_lines(palette_key)
         ax.set_title(place, {'fontsize': 22})
-        ax.legend(lines,palette_key.keys(), fontsize="x-large", frameon=False, mode="expand")
-
+        ax.legend(lines,palette_key.keys(), fontsize="large", frameon=False, mode="expand")
+        plt.savefig("file.svg", transparent=True, dpi = dpi)
         st.pyplot()
 
     #output the top words and counts
-    df = pd.DataFrame(sorted_popular)
+    df = pd.DataFrame(sorted_popular.items(), columns = ["word", "count"])
     st.sidebar.write(df)
+
+    #offer download link
+
+    st.markdown(get_table_download_link("file.svg"), unsafe_allow_html=True)

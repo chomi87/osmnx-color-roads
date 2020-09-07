@@ -96,7 +96,6 @@ def color_for_road(road_name, palette_key):
     """
     Take a road string, the language and return a color
     """
-    #road_name = str(road_name).lower().translate(str.maketrans('', '', string.punctuation))
     # Check if any of the palette keys are present in the road name
     for key in palette_key:
         if key in road_name:
@@ -171,6 +170,7 @@ def normalise_str(st):
     clean road names by lowering, stripping punctuation, leading and trailing spaces
     """
     normalised = str(st).lower().translate(str.maketrans('', '', string.punctuation)).strip()
+    normalised = normalised.translate(str.maketrans('', '', string.digits))
     normalised = ' '.join([word for word in normalised.split() if word not in (STOP_WORDS)])
     return normalised
 
