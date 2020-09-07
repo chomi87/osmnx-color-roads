@@ -47,14 +47,14 @@ if len(place)>2:
         # Find the most popular words in the names,
         # these should be things like 'road', 'street' etc
         popular_words = find_common_words(edge_attributes, word_list)
+        sorted_popular= sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
         top = dict(list(popular_words.items())[0: key_size])
 
     with st.spinner('Generating color palette...'):
         palette_key = palette_generator(top)
 
     with st.spinner('Applying palette...'):
-        edge_colors = [color_for_road(row['name'], palette_key)
-                       for _, row in edge_attributes.iterrows()]
+        edge_colors = list(edge_attributes.loc[:, "name"].map(lambda road_name: color_for_road(road_name, palette_key)))
 
     with st.spinner('Drawing the plot...'):
         # Draw the plot
@@ -71,6 +71,5 @@ if len(place)>2:
         st.pyplot()
 
     #output the top words and counts
-    sorted_dict = sorted(popular_words.items(), key=lambda item: item[1], reverse=True)
-    df = pd.DataFrame(sorted_dict)
+    df = pd.DataFrame(sorted_popular)
     st.sidebar.write(df)
