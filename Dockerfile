@@ -43,8 +43,5 @@ ENV PYTHONPATH "${PYTHONPATH}:/app"
 ENV PYTHONPATH "${PYTHONPATH}:/app/src"
 ENV PATH="$HOME/.local/bin:$PATH"
 
-
 # start app
 CMD streamlit run /app/src/app.py
-#CMD [ "streamlit", "hello"]
-#CMD [ "streamlit", "run", "/app/src/app.py" ]

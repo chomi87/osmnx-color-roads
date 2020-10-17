@@ -26,7 +26,7 @@ network_type = "all"
 word_list = None
 
 #display title and intro text
-st.title('Color city generator - LIVE!')
+st.title('Color city generator - TEST!')
 st.subheader('Generate a map of a city with roads colored by their type (road, street, ...)')
 
 # Add a widget to the sidebar to select number of colors:
