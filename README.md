@@ -12,6 +12,19 @@ Quickly generate maps of road networks coloured by words in road names
 ## Installation and usage without docker
 TODO
 
+## Installation with docker-compose
+
+* clone the repository
+* install docker and coker-compose on your machine
+* `cd` in the directory to the level of the docker-compose.yml file
+* build and  run the docker image using
+```
+docker-compose up
+```
+
+Note: using docker compose you mount the src folder in the container. This allows for changes in the sourcecode to have
+direct effect in the application without rebuilding the container. 
+
 ## Installation with docker
 
 * clone the repository
@@ -40,6 +53,4 @@ Inspiration and original code from Giuseppe Sollazzo @puntofisso
 -> https://twitter.com/puntofisso/status/1213135545121099777?s=20
 
 Building on work by Cédric Scherer @CedScherer and @erdavis
-
-#docker #mapgeek #gis #osmnx #opensource #visualization #python #mapvisualization
 
